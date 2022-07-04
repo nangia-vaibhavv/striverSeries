@@ -1,3 +1,6 @@
+#include<iostream>
+using namespace std;
+
 class Solution {
 public:
     void tree(TreeNode *root, vector<string>&ans, string s)
