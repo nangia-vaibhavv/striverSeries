@@ -1,18 +1,25 @@
- int solve(int ind, int sum,vector<int>&num,vector<vector<int>>&dp)
+int solve(int ind, int target, vector<int> &nums, vector<vector<int>> &dp)
+{
+    if (ind == 0)
     {
-        if(sum==0)  return 1;
-        if(ind==0) return num[0]==sum;
-        if(dp[ind][sum]!=-1) return dp[ind][sum];
-        int nottake=solve(ind-1,sum,num,dp);
-        int take=0;
-        if(num[ind]<=sum)
-            take=solve(ind-1,sum-num[ind],num,dp);
-        return dp[ind][sum]=take+nottake;
+        if (target == 0 && nums[ind] == 0)
+            return 2;
+        if (target == 0 || nums[ind] == target)
+            return 1;
+        return 0;
     }
+    if (dp[ind][target] != -1)
+        return dp[ind][target];
+    int nottake = solve(ind - 1, target, nums, dp);
+    int take = 0;
+    if (nums[ind] <= target)
+        take = solve(ind - 1, target - nums[ind], nums, dp);
+    return dp[ind][target] = take + nottake;
+}
 int findWays(vector<int> &num, int tar)
 {
     // Write your code here.
-      int n=num.size();
-        vector<vector<int>>dp(n,vector<int>(tar+1,-1));
-        return solve(n-1,tar,num,dp);
+    int n = num.size();
+    vector<vector<int>> dp(n, vector<int>(tar + 1, -1));
+    return solve(n - 1, tar, num, dp);
 }
