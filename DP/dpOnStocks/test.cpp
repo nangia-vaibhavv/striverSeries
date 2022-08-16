@@ -1,3 +1,4 @@
+
 class Solution
 {
 public:
@@ -16,7 +17,7 @@ public:
         else
             return dp[ind][buy][cap] = max(solve(ind + 1, 0, cap, prices, n, dp), prices[ind] + solve(ind + 1, 1, cap - 1, prices, n, dp));
     }
-    int maxProfit(vector<int> &prices)
+    int maxProfit(int k, vector<int> &prices)
     {
         int n = prices.size();
         // vector<vector<vector<int>>> dp(n, vector<vector<int>>(2, vector<int>(3, -1)));
@@ -24,22 +25,22 @@ public:
         // return solve(0, 1, 2, prices, n, dp);
 
         //         tabulation
-        vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(2, vector<int>(3, 0)));
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(k + 1, 0)));
         for (int ind = n - 1; ind >= 0; ind--)
         {
             for (int buy = 0; buy <= 1; buy++)
             {
-                for (int cap = 1; cap <= 2; cap++)
+                for (int cap = 1; cap <= k; cap++)
                 {
-                    if (buy==1)
+                    if (buy == 1)
                     {
-                         dp[ind][buy][cap] = max(-prices[ind] + dp[ind + 1][0][cap], dp[ind + 1][1][cap]);
+                        dp[ind][buy][cap] = max(-prices[ind] + dp[ind + 1][0][cap], dp[ind + 1][1][cap]);
                     }
                     else
-                         dp[ind][buy][cap] = max(dp[ind + 1][0][cap], prices[ind] + dp[ind + 1][1][cap - 1]);
+                        dp[ind][buy][cap] = max(dp[ind + 1][0][cap], prices[ind] + dp[ind + 1][1][cap - 1]);
                 }
             }
         }
-        return dp[0][1][2];
+        return dp[0][1][k];
     }
 };
